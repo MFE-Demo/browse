@@ -3,19 +3,23 @@ import styled from "styled-components";
 import MovieCard from "../MovieCard/MovieCard";
 
 const CardContainer = styled.div`
+  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-evenly;
 `;
 
-const RestaurantList = ({ movies, nameFilter }) => {
+const MovieList = ({ movies, nameFilter }) => {
+    console.log(movies)
   return (
     <CardContainer>
-      {movies.map(movie => (
-        <MovieCard key={movie.imdbID} title={movie.title} year={movie.year} art={movie.poster} />
-      ))}
+      {movies && movies.length > 1 ? movies.map(movie => {
+          if(movie.Poster !== "N/A"){
+        return <MovieCard key={movie.imdbID} movie={movie} />
+          }
+      }) : <p>Nothing to show..</p>}
     </CardContainer>
   );
 };
 
-export default RestaurantList;
+export default MovieList;

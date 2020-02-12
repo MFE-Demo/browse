@@ -13,6 +13,9 @@ const Card = styled.div`
   width: 100%;
   max-width: 350px;
   margin: 0 5px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+  padding: 10px;
+  margin-bottom: 10px;
 `;
 
 const CardTitleRow = styled.div`
@@ -22,12 +25,14 @@ const CardTitleRow = styled.div`
   margin-bottom: 10px;
 `;
 
-const CardTitle = styled.h2`
+const CardTitle = styled.h3`
   margin: 0;
+  text-align: center;
 `;
 
 const Img = styled.img`
   width: 100%;
+  height: 65vh;
 `;
 
 const Description = styled.p`
@@ -37,25 +42,14 @@ const Description = styled.p`
 
 const MovieCard = ({ movie }) => (
   <Card>
-    <StyledLink to={`/movie/${movie.imbdID}`}>
+    <StyledLink to={`/movie/${movie.imdbID}`}>
       <CardTitleRow>
-        <CardTitle>{movie.title}</CardTitle>
+        <CardTitle>{movie.Title}</CardTitle>
       </CardTitleRow>
-      <Img src={movie.imageSrc} alt={movie.imageDescription} />
-      <Description>{movie.description}</Description>
+      <Img src={movie.Poster} alt={`${movie.Title} art`} />
+      {/* <Description>{movie.description}</Description> */}
     </StyledLink>
   </Card>
 );
-
-MovieCard.propTypes = {
-  restaurant: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    priceRange: PropTypes.string.isRequired,
-    imageSrc: PropTypes.string.isRequired,
-    imageDescription: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default MovieCard;
