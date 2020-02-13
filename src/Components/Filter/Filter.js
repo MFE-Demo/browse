@@ -7,9 +7,10 @@ const mediumScreen = `@media (max-width: 830px)`;
 const smallScreen = `@media (max-width: 430px)`;
 
 const FilterRow = styled.div`
-  padding: 30px;
+  padding: 13px;
   font-size: 24px;
   display: flex;
+  align-items: center;
   background-color: #99AAB5;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -18,10 +19,11 @@ const FilterRow = styled.div`
   }
 `;
 
+
 const Filters = ({ name, setNameFilter, resetAll }) => (
   <FilterRow>
     <TextInput label="Search:" value={name} onChange={setNameFilter} />
-    <Button onClick={resetAll}>Clear</Button>
+    <Button style={{height: '100%'}}onClick={resetAll}>Clear</Button>
   </FilterRow>
 );
 
