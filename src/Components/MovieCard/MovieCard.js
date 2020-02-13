@@ -13,9 +13,12 @@ const Card = styled.div`
   width: 100%;
   max-width: 350px;
   margin: 0 5px;
-  box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.5);
   padding: 10px;
   margin-bottom: 10px;
+  background-color: #99AAB5;
+  color: #fff;
+  border-radius: 5px;
 `;
 
 const CardTitleRow = styled.div`
@@ -25,14 +28,16 @@ const CardTitleRow = styled.div`
   margin-bottom: 10px;
 `;
 
-const CardTitle = styled.h3`
+const CardTitle = styled.h4`
+  width: 100%;
   margin: 0;
   text-align: center;
 `;
 
 const Img = styled.img`
   width: 100%;
-  height: 65vh;
+  height: 95%;
+  border-radius: 5px;
 `;
 
 const Description = styled.p`

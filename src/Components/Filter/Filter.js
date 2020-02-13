@@ -10,10 +10,11 @@ const FilterRow = styled.div`
   padding: 30px;
   font-size: 24px;
   display: flex;
-  background-color: lightgreen;
+  background-color: #99AAB5;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
   ${mediumScreen} {
     flex-direction: column;
-    
   }
 `;
 
