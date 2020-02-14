@@ -24,7 +24,9 @@ class App extends React.Component {
       movies: [],
       loading: true,
       error: false,
-      nameFilter: ""
+      nameFilter: "",
+      searchType: "movie",
+      lastSearch: "star wars"
     };
   }
 
@@ -36,7 +38,7 @@ class App extends React.Component {
         console.log(movies);
         this.setState({
           movies: movies.Search,
-          nameFilter: "",
+          nameFilter: "star wars",
           loading: false
         });
       })
@@ -46,14 +48,29 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { nameFilter } = this.state;
+    const { nameFilter, searchType } = this.state;
     if (
       prevState.nameFilter !== nameFilter &&
       this.state.nameFilter !== "" &&
-      this.state.nameFilter.length > 2
+      this.state.nameFilter.length > 1
     ) {
       fetch(
-        `http://www.omdbapi.com/?apikey=81fbe921&type=movie&s=${this.state.nameFilter}`
+        `http://www.omdbapi.com/?apikey=81fbe921&type=${searchType}&s=${this.state.nameFilter}`
+      )
+        .then(result => result.json())
+        .then(movies => {
+          this.setState({
+            movies: movies.Search,
+            lastSearch: nameFilter,
+            loading: false
+          });
+        })
+        .catch(() => {
+          this.setState({ loading: false, error: true });
+        });
+    } else if (prevState.searchType !== searchType) {
+      fetch(
+        `http://www.omdbapi.com/?apikey=81fbe921&type=${searchType}&s=${this.state.lastSearch}`
       )
         .then(result => result.json())
         .then(movies => {
@@ -69,6 +86,8 @@ class App extends React.Component {
   }
 
   setNameFilter = value => this.setState({ nameFilter: value });
+
+  setSearchType = searchType => this.setState({ searchType });
 
   resetAllFilters = () => this.setState({ nameFilter: "" });
 
@@ -93,6 +112,8 @@ class App extends React.Component {
             name={nameFilter}
             setNameFilter={this.setNameFilter}
             resetAll={this.resetAllFilters}
+            searchType={this.state.searchType}
+            setSearchType={this.setSearchType}
           />
           <MovieList movies={movies} nameFilter={nameFilter} />
         </MainColumn>
