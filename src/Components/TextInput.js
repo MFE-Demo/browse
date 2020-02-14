@@ -16,7 +16,7 @@ const Label = styled.label`
 
 const TextInput = ({ label, value, onChange, ...props }) => (
   <Label {...props}>
-    {label}
+    {/* {label} */}
     <Input value={value} onChange={e => onChange(e.target.value)} />
   </Label>
 );

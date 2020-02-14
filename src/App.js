@@ -38,7 +38,7 @@ class App extends React.Component {
         console.log(movies);
         this.setState({
           movies: movies.Search,
-          nameFilter: "star wars",
+          lastSearch: "star wars",
           loading: false
         });
       })
