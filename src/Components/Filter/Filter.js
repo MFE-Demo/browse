@@ -7,23 +7,26 @@ const mediumScreen = `@media (max-width: 830px)`;
 const smallScreen = `@media (max-width: 430px)`;
 
 const FilterRow = styled.div`
-  padding: 13px;
+  padding: 7px 10px;
   font-size: 24px;
   display: flex;
   align-items: center;
-  background-color: #99AAB5;
+  // background-color: #99aab5;
+  background-color: #fff;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
+  border-bottom: 1px solid black;
   ${mediumScreen} {
     flex-direction: column;
   }
 `;
 
-
 const Filters = ({ name, setNameFilter, resetAll }) => (
   <FilterRow>
     <TextInput label="Search:" value={name} onChange={setNameFilter} />
-    <Button style={{height: '100%'}}onClick={resetAll}>Clear</Button>
+    <Button style={{ height: "100%" }} onClick={resetAll}>
+      Clear
+    </Button>
   </FilterRow>
 );
 

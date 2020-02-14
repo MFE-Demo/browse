@@ -1,14 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-const Input = styled.input.attrs({ type: 'text' })`
+const Input = styled.input.attrs({ type: "text" })`
   height: 30px;
   font-size: 20px;
   margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 5px;
 `;
 
 const Label = styled.label`
-  font-size: 25px;
+  font-size: 20px;
   margin-left: 10px;
 `;
 

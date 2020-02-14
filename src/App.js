@@ -8,6 +8,7 @@ import MovieList from "./Components/MovieList/MovieList";
 
 const MainColumn = styled.div`
   margin: 0 auto;
+  background-color: black;
 `;
 
 // const defaultFilters = {
