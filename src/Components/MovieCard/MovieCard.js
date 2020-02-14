@@ -11,20 +11,26 @@ const StyledLink = styled(Link)`
 const Card = styled.div`
   display: inline-block;
   width: 100%;
-  max-width: 350px;
+  max-width: 280px;
   margin: 0 5px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.5);
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
   background-color: #fff;
+  transition: transform 0.5s;
+  &:hover {
+    transform: scale(1.025);
+  }
 `;
 
 const CardTitleRow = styled.div`
+  height: 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  font-size: 13px;
 `;
 
 const CardTitle = styled.h4`
@@ -35,8 +41,9 @@ const CardTitle = styled.h4`
 
 const Img = styled.img`
   width: 100%;
-  height: 95%;
+  height: 90%;
   border-radius: 5px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.5);
 `;
 
 const Description = styled.p`

@@ -15,7 +15,7 @@ const FilterRow = styled.div`
   background-color: #fff;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
-  border-bottom: 1px solid black;
+  border-bottom: 0.5px solid black;
   ${mediumScreen} {
     flex-direction: column;
   }
