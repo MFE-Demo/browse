@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import MovieCard from "../MovieCard/MovieCard";
+const mediumScreen = `@media (min-width: 1080px)`;
 
 const CardContainer = styled.div`
   padding-top: 15px;
@@ -9,15 +10,38 @@ const CardContainer = styled.div`
   justify-content: space-evenly;
   // background-color: #99aab5;
   // background-color: black;
-  // background-image: url(https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80);
-  // background-size: 100% 100%;
+  ${mediumScreen} {
+    max-width: 80%;
+  }
 `;
 
-const MovieList = ({ movies, nameFilter }) => {
+const MovieList = ({ movies, series, searchType, nameFilter }) => {
+  const [allList, setAll] = React.useState([]);
   console.log(movies);
+  console.log(series, "Series");
+  useEffect(() => {
+    if (
+      movies &&
+      series &&
+      movies.length > 1 &&
+      series.length > 1 &&
+      searchType === "all"
+    ) {
+      setAll([...movies, ...series]);
+      console.log("hi yo", allList);
+    }
+  }, [series]);
+
+  useEffect(() => {}, [movies]);
   return (
     <CardContainer id="card-wrapper">
-      {movies && movies.length > 1 ? (
+      {allList && allList.length > 1 && searchType === "all" ? (
+        allList.map(movie => {
+          if (movie.Poster !== "N/A") {
+            return <MovieCard key={movie.imdbID} movie={movie} />;
+          }
+        })
+      ) : movies && movies.length > 1 && searchType !== "all" ? (
         movies.map(movie => {
           if (movie.Poster !== "N/A") {
             return <MovieCard key={movie.imdbID} movie={movie} />;

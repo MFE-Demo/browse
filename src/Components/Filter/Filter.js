@@ -9,7 +9,8 @@ const mediumScreen = `@media (max-width: 830px)`;
 const smallScreen = `@media (max-width: 430px)`;
 
 const FilterRow = styled.div`
-  padding: 7px 10px;
+  width: 100% !important;
+  padding: 5px 30%;
   font-size: 24px;
   display: flex;
   flex-direction: column;
@@ -33,44 +34,47 @@ const Filters = ({
   setSearchType
 }) => (
   <FilterRow>
-    <section
-      style={{
-        width: "35%",
-        maxWidth: "355px",
-        textAlign: "center",
-        display: "flex",
-        justifyContent: "flexStart",
-        marginBottom: "5px",
-        fontSize: "15px"
-      }}
-    >
-      <p
-        className={
-          searchType === "movie"
-            ? "search-selector selected"
-            : "search-selector"
-        }
-        onClick={() => setSearchType("movie")}
-      >
-        Movies
-      </p>
-      |
-      <p
-        className={
-          searchType === "series"
-            ? "search-selector selected"
-            : "search-selector"
-        }
-        onClick={() => setSearchType("series")}
-      >
-        Series
-      </p>
-    </section>
-    <section style={{ display: "flex" }}>
-      <TextInput label="Search:" value={name} onChange={setNameFilter} />
-      <Button style={{ height: "100%" }} onClick={resetAll}>
-        Clear
-      </Button>
+    <section className="filter-wrapper">
+      <section className="filter-nav">
+        <p
+          className={
+            searchType === "all"
+              ? "search-selector selected"
+              : "search-selector"
+          }
+          onClick={() => setSearchType("all")}
+        >
+          All
+        </p>
+        |
+        <p
+          className={
+            searchType === "movie"
+              ? "search-selector selected"
+              : "search-selector"
+          }
+          onClick={() => setSearchType("movie")}
+        >
+          Movies
+        </p>
+        |
+        <p
+          className={
+            searchType === "series"
+              ? "search-selector selected"
+              : "search-selector"
+          }
+          onClick={() => setSearchType("series")}
+        >
+          Series
+        </p>
+      </section>
+      <section style={{ display: "flex", width: "550px" }}>
+        <TextInput label="Search:" value={name} onChange={setNameFilter} />
+        <Button style={{ height: "100%" }} onClick={resetAll}>
+          Clear
+        </Button>
+      </section>
     </section>
   </FilterRow>
 );

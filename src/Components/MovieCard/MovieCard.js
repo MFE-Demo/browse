@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import "./MovieCard.css";
 
 const StyledLink = styled(Link)`
   color: inherit;
@@ -9,6 +10,7 @@ const StyledLink = styled(Link)`
 `;
 
 const Card = styled.div`
+  position: relative;
   display: inline-block;
   width: 100%;
   max-width: 280px;
@@ -57,8 +59,15 @@ const MovieCard = ({ movie }) => (
       <CardTitleRow>
         <CardTitle>{movie.Title}</CardTitle>
       </CardTitleRow>
-      <Img src={movie.Poster} alt={`${movie.Title} art`} />
-      {/* <Description>{movie.description}</Description> */}
+      <div style={{ height: "97%" }}>
+        <Img src={movie.Poster} alt={`${movie.Title} art`} />
+        {movie.Type === "movie" ? (
+          <i className="fas fa-film abs" />
+        ) : (
+          <i className="fas fa-tv abs" />
+        )}
+        {/* <Description>{movie.description}</Description> */}
+      </div>
     </StyledLink>
   </Card>
 );

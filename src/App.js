@@ -5,8 +5,10 @@ import styled from "styled-components";
 import Loading from "./Components/Loading/Loading";
 import Filter from "./Components/Filter/Filter";
 import MovieList from "./Components/MovieList/MovieList";
+import "./App.css";
 
 const MainColumn = styled.div`
+  width: 100%;
   margin: 0 auto;
   // background-color: black;
 `;
@@ -22,6 +24,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       movies: [],
+      series: [],
       loading: true,
       error: false,
       nameFilter: "",
@@ -48,7 +51,7 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { nameFilter, searchType } = this.state;
+    const { nameFilter, searchType, lastSearch } = this.state;
     if (
       prevState.nameFilter !== nameFilter &&
       this.state.nameFilter !== "" &&
@@ -68,7 +71,8 @@ class App extends React.Component {
         .catch(() => {
           this.setState({ loading: false, error: true });
         });
-    } else if (prevState.searchType !== searchType) {
+    } else if (prevState.searchType !== searchType && searchType !== "all") {
+      console.log("series fired.");
       fetch(
         `http://www.omdbapi.com/?apikey=81fbe921&type=${searchType}&s=${this.state.lastSearch}`
       )
@@ -82,6 +86,54 @@ class App extends React.Component {
         .catch(() => {
           this.setState({ loading: false, error: true });
         });
+    } else if (prevState.searchType !== searchType && searchType === "all") {
+      console.log("all search fired.");
+      fetch(
+        `http://www.omdbapi.com/?apikey=81fbe921&type=movie&s=${this.state.lastSearch}`
+      )
+        .then(result => result.json())
+        .then(movies => {
+          this.setState({
+            movies: movies.Search
+          });
+          return fetch(
+            `http://www.omdbapi.com/?apikey=81fbe921&type=series&s=${this.state.lastSearch}`
+          )
+            .then(result => result.json())
+            .then(series => {
+              this.setState({
+                series: series.Search,
+                loading: false
+              });
+            })
+            .catch(() => {
+              this.setState({ loading: false, error: true });
+            });
+        });
+    } else if (searchType === "all" && prevState.lastSearch !== lastSearch) {
+      console.log("all d search fired.");
+      fetch(
+        `http://www.omdbapi.com/?apikey=81fbe921&type=movie&s=${this.state.nameFilter}`
+      )
+        .then(result => result.json())
+        .then(movies => {
+          this.setState({
+            movies: movies.Search
+          });
+          return fetch(
+            `http://www.omdbapi.com/?apikey=81fbe921&type=series&s=${this.state.nameFilter}`
+          )
+            .then(result => result.json())
+            .then(series => {
+              this.setState({
+                series: series.Search,
+                loading: false
+              });
+            })
+            .catch(() => {
+              this.setState({ loading: false, error: true });
+            });
+        });
     }
   }
 
@@ -92,7 +144,14 @@ class App extends React.Component {
   resetAllFilters = () => this.setState({ nameFilter: "" });
 
   render() {
-    const { movies, nameFilter, loading, error } = this.state;
+    const {
+      movies,
+      series,
+      searchType,
+      nameFilter,
+      loading,
+      error
+    } = this.state;
 
     if (loading) {
       return <Loading />;
@@ -115,7 +174,14 @@ class App extends React.Component {
             searchType={this.state.searchType}
             setSearchType={this.setSearchType}
           />
-          <MovieList movies={movies} nameFilter={nameFilter} />
+          <div className="list-wrapper">
+            <MovieList
+              movies={movies}
+              series={series}
+              searchType={searchType}
+              nameFilter={nameFilter}
+            />
+          </div>
         </MainColumn>
       </Router>
     );
