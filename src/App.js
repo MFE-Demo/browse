@@ -1,6 +1,8 @@
 import React from "react";
 import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
+import { connect } from "react-redux";
+import { getMovies, getSeries } from "./Redux/Reducers/flixReducer";
 import styled from "styled-components";
 import Loading from "./Components/Loading/Loading";
 import Filter from "./Components/Filter/Filter";
@@ -12,11 +14,6 @@ const MainColumn = styled.div`
   margin: 0 auto;
   // background-color: black;
 `;
-
-// const defaultFilters = {
-//   nameFilter: ""
-// };
-
 const defaultHistory = createBrowserHistory();
 
 class App extends React.Component {
@@ -28,112 +25,31 @@ class App extends React.Component {
       loading: true,
       error: false,
       nameFilter: "",
-      searchType: "movie",
+      searchType: "all",
       lastSearch: "star wars"
     };
   }
 
-  componentDidMount() {
-    const host = process.env.REACT_APP_CONTENT_HOST;
-    fetch(`http://www.omdbapi.com/?apikey=81fbe921&type=movie&s=star+wars`)
-      .then(result => result.json())
-      .then(movies => {
-        console.log(movies);
-        this.setState({
-          movies: movies.Search,
-          lastSearch: "star wars",
-          loading: false
-        });
-      })
-      .catch(() => {
-        this.setState({ loading: false, error: true });
-      });
+  async componentDidMount() {
+    const { nameFilter } = this.state;
+    const { movies, series } = this.props;
+    if (movies && series && movies.length < 1 && series.length < 1) {
+      await this.props.getMovies("star wars");
+      await this.props.getSeries("star wars");
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { nameFilter, searchType, lastSearch } = this.state;
+    const { movies, series } = this.props;
+
     if (
       prevState.nameFilter !== nameFilter &&
       this.state.nameFilter !== "" &&
-      this.state.nameFilter.length > 1
+      this.state.nameFilter.length > 2
     ) {
-      fetch(
-        `http://www.omdbapi.com/?apikey=81fbe921&type=${searchType}&s=${this.state.nameFilter}`
-      )
-        .then(result => result.json())
-        .then(movies => {
-          this.setState({
-            movies: movies.Search,
-            lastSearch: nameFilter,
-            loading: false
-          });
-        })
-        .catch(() => {
-          this.setState({ loading: false, error: true });
-        });
-    } else if (prevState.searchType !== searchType && searchType !== "all") {
-      console.log("series fired.");
-      fetch(
-        `http://www.omdbapi.com/?apikey=81fbe921&type=${searchType}&s=${this.state.lastSearch}`
-      )
-        .then(result => result.json())
-        .then(movies => {
-          this.setState({
-            movies: movies.Search,
-            loading: false
-          });
-        })
-        .catch(() => {
-          this.setState({ loading: false, error: true });
-        });
-    } else if (prevState.searchType !== searchType && searchType === "all") {
-      console.log("all search fired.");
-      fetch(
-        `http://www.omdbapi.com/?apikey=81fbe921&type=movie&s=${this.state.lastSearch}`
-      )
-        .then(result => result.json())
-        .then(movies => {
-          this.setState({
-            movies: movies.Search
-          });
-          return fetch(
-            `http://www.omdbapi.com/?apikey=81fbe921&type=series&s=${this.state.lastSearch}`
-          )
-            .then(result => result.json())
-            .then(series => {
-              this.setState({
-                series: series.Search,
-                loading: false
-              });
-            })
-            .catch(() => {
-              this.setState({ loading: false, error: true });
-            });
-        });
-    } else if (searchType === "all" && prevState.lastSearch !== lastSearch) {
-      console.log("all d search fired.");
-      fetch(
-        `http://www.omdbapi.com/?apikey=81fbe921&type=movie&s=${this.state.nameFilter}`
-      )
-        .then(result => result.json())
-        .then(movies => {
-          this.setState({
-            movies: movies.Search
-          });
-          return fetch(
-            `http://www.omdbapi.com/?apikey=81fbe921&type=series&s=${this.state.nameFilter}`
-          )
-            .then(result => result.json())
-            .then(series => {
-              this.setState({
-                series: series.Search,
-                loading: false
-              });
-            })
-            .catch(() => {
-              this.setState({ loading: false, error: true });
-            });
-        });
+      this.props.getMovies(nameFilter);
+      this.props.getSeries(nameFilter);
     }
   }
 
@@ -144,17 +60,22 @@ class App extends React.Component {
   resetAllFilters = () => this.setState({ nameFilter: "" });
 
   render() {
-    const {
-      movies,
-      series,
-      searchType,
-      nameFilter,
-      loading,
-      error
-    } = this.state;
+    const { searchType, nameFilter, loading, error } = this.state;
+
+    const { movies, series } = this.props;
+
+    if ((movies, series)) console.log(movies, series);
+
+    if (loading && movies.length > 1 && series.length > 1) {
+      this.setState({ loading: false });
+    }
 
     if (loading) {
-      return <Loading />;
+      return (
+        <MainColumn>
+          <Loading />
+        </MainColumn>
+      );
     }
 
     if (error) {
@@ -163,29 +84,37 @@ class App extends React.Component {
           Sorry, but the movie list is unavailable right now
         </MainColumn>
       );
-    }
-    return (
-      <Router history={this.props.history || defaultHistory}>
-        <MainColumn>
-          <Filter
-            name={nameFilter}
-            setNameFilter={this.setNameFilter}
-            resetAll={this.resetAllFilters}
-            searchType={this.state.searchType}
-            setSearchType={this.setSearchType}
-          />
-          <div className="list-wrapper">
-            <MovieList
-              movies={movies}
-              series={series}
-              searchType={searchType}
-              nameFilter={nameFilter}
+    } else
+      return (
+        <Router history={this.props.history || defaultHistory}>
+          <MainColumn>
+            <Filter
+              name={nameFilter}
+              setNameFilter={this.setNameFilter}
+              resetAll={this.resetAllFilters}
+              searchType={this.state.searchType}
+              setSearchType={this.setSearchType}
             />
-          </div>
-        </MainColumn>
-      </Router>
-    );
+            <div className="list-wrapper">
+              {movies && movies.length > 1 ? (
+                <MovieList
+                  movies={this.props.movies}
+                  series={this.props.series}
+                  searchType={searchType}
+                  nameFilter={nameFilter}
+                />
+              ) : (
+                <Loading />
+              )}
+            </div>
+          </MainColumn>
+        </Router>
+      );
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return state.flix;
+}
+
+export default connect(mapStateToProps, { getMovies, getSeries })(App);

@@ -20,17 +20,11 @@ const MovieList = ({ movies, series, searchType, nameFilter }) => {
   console.log(movies);
   console.log(series, "Series");
   useEffect(() => {
-    if (
-      movies &&
-      series &&
-      movies.length > 1 &&
-      series.length > 1 &&
-      searchType === "all"
-    ) {
+    if (movies && series && movies.length > 1 && series.length > 1) {
       setAll([...movies, ...series]);
       console.log("hi yo", allList);
     }
-  }, [series]);
+  }, [series, movies]);
 
   useEffect(() => {}, [movies]);
   return (
@@ -41,10 +35,16 @@ const MovieList = ({ movies, series, searchType, nameFilter }) => {
             return <MovieCard key={movie.imdbID} movie={movie} />;
           }
         })
-      ) : movies && movies.length > 1 && searchType !== "all" ? (
+      ) : movies && movies.length > 1 && searchType === "movie" ? (
         movies.map(movie => {
           if (movie.Poster !== "N/A") {
             return <MovieCard key={movie.imdbID} movie={movie} />;
+          }
+        })
+      ) : series && series.length > 1 && searchType === "series" ? (
+        series.map(series => {
+          if (series.Poster !== "N/A") {
+            return <MovieCard key={series.imdbID} movie={series} />;
           }
         })
       ) : (
