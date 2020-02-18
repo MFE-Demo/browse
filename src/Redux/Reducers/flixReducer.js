@@ -40,14 +40,11 @@ export default function(state = initialState, action) {
   let { type, payload } = action;
   switch (type) {
     case GET_MOVIES + "_FULFILLED":
-      console.log("hihtitht", payload);
-
       return {
         ...state,
         movies: payload.Search
       };
     case GET_SERIES + "_FULFILLED":
-      console.log("hitters", payload);
       return {
         ...state,
         series: payload.Search
