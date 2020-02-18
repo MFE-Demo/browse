@@ -53,6 +53,8 @@ const Description = styled.p`
   font-size: 20px;
 `;
 
+//This component will represent each movie or TV series being displayed in our app. When a user clicks on one of these MovieCards, the route will be updated in the container. The container will see the new URL and determine that the movie micro frontend should be mounted and rendered. The movie micro frontend's routing logic will then extract the movie/series ID from the URL and render the correct information.
+
 const MovieCard = ({ movie }) => (
   <Card>
     <StyledLink to={`/movie/${movie.imdbID}`}>
