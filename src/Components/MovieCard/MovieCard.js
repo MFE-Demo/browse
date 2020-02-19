@@ -61,7 +61,7 @@ const MovieCard = ({ movie }) => (
       <CardTitleRow>
         <CardTitle>{movie.Title}</CardTitle>
       </CardTitleRow>
-      <div style={{ height: "97%" }}>
+      <div style={{ height: "97%", fontSize: "15px" }} id="poster-wrapper">
         <Img src={movie.Poster} alt={`${movie.Title} art`} />
         {movie.Type === "movie" ? (
           <i className="fas fa-film abs" />

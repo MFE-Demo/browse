@@ -17,8 +17,8 @@ const FilterRow = styled.div`
   align-items: center;
   // background-color: #99aab5;
   background-color: #fff;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 40px;
+  border-bottom-left-radius: 40px;
   // border-bottom: 0.5px solid black;
   box-shadow: 0 5px 6px -6px black;
   ${mediumScreen} {
