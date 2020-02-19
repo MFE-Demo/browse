@@ -22,7 +22,7 @@ const MovieList = ({ movies, series, searchType, nameFilter }) => {
   useEffect(() => {
     if (movies && series && movies.length > 1 && series.length > 1) {
       setAll([...movies, ...series]);
-      console.log("hi yo", allList);
+      console.log("Combined List", allList);
     }
   }, [series, movies]);
 
