@@ -46,6 +46,10 @@ const Img = styled.img`
   height: 90%;
   border-radius: 5px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s;
+  &:hover {
+    transform: scale(1.01);
+  }
 `;
 
 const Description = styled.p`
